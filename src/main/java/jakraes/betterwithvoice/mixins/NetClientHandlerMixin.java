@@ -1,6 +1,5 @@
 package jakraes.betterwithvoice.mixins;
 
-import jakraes.betterwithvoice.BetterWithVoice;
 import jakraes.betterwithvoice.interfaces.INetHandlerMixin;
 import jakraes.betterwithvoice.misc.PacketVoice;
 import net.minecraft.client.Minecraft;
@@ -17,7 +16,9 @@ import javax.sound.sampled.*;
 
 @Mixin(value = NetClientHandler.class, remap = false)
 public class NetClientHandlerMixin implements INetHandlerMixin {
-	@Final @Shadow private NetworkManager netManager;
+	@Final
+	@Shadow
+	private NetworkManager netManager;
 	private AudioFormat format;
 	private DataLine.Info info;
 	private SourceDataLine speakers;

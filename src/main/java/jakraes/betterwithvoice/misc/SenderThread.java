@@ -1,16 +1,15 @@
 package jakraes.betterwithvoice.misc;
 
 import jakraes.betterwithvoice.BetterWithVoice;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.net.handler.NetClientHandler;
 
 import javax.sound.sampled.*;
 
 public class SenderThread extends Thread {
-	private NetClientHandler netClientHandler;
-	private AudioFormat format;
-	private DataLine.Info info;
-	private TargetDataLine microphone;
+	private final NetClientHandler netClientHandler;
+	private final AudioFormat format;
+	private final DataLine.Info info;
+	private final TargetDataLine microphone;
 	private boolean running = false;
 
 	public SenderThread(NetClientHandler netClientHandler) {

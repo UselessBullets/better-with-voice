@@ -1,6 +1,5 @@
 package jakraes.betterwithvoice.misc;
 
-import jakraes.betterwithvoice.BetterWithVoice;
 import jakraes.betterwithvoice.interfaces.INetHandlerMixin;
 import net.minecraft.core.net.handler.NetHandler;
 import net.minecraft.core.net.packet.Packet;
@@ -38,7 +37,7 @@ public class PacketVoice extends Packet {
 
 	@Override
 	public void processPacket(NetHandler netHandler) {
-		((INetHandlerMixin) (Object) netHandler).handleVoice(this);
+		((INetHandlerMixin) netHandler).handleVoice(this);
 	}
 
 	@Override

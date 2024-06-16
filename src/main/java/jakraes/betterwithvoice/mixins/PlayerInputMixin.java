@@ -1,11 +1,9 @@
 package jakraes.betterwithvoice.mixins;
 
 import jakraes.betterwithvoice.BetterWithVoice;
-import jakraes.betterwithvoice.misc.PacketVoice;
 import jakraes.betterwithvoice.misc.SenderThread;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.PlayerInput;
-import net.minecraft.core.net.packet.Packet250CustomPayload;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,8 +13,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = PlayerInput.class, remap = false)
 public class PlayerInputMixin {
-	@Final @Shadow public Minecraft mc;
 	private final int V_KEY = 47;
+	@Final
+	@Shadow
+	public Minecraft mc;
 	private SenderThread senderThread;
 
 	@Inject(method = "<init>", at = @At("TAIL"))
@@ -30,8 +30,7 @@ public class PlayerInputMixin {
 			if (pressed && !senderThread.isAlive()) {
 				BetterWithVoice.LOGGER.info("Sending");
 				senderThread.start();
-			}
-			else if (!pressed) {
+			} else if (!pressed) {
 				BetterWithVoice.LOGGER.info("Stopping");
 				senderThread.end();
 				senderThread = new SenderThread(mc.getSendQueue());

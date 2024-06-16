@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "jakraes.betterwithvoice.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "NetClientHandlerMixin",
+    "NetServerHandlerMixin",
+    "PlayerInputMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

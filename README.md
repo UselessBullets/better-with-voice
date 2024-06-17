@@ -4,6 +4,5 @@ Better With Voice! is a mod for [Better Than Adventure!](https://www.betterthana
 
 ### TODO
 - [x] Add a way to change the keybind
-- [ ] Add stereo
+- [ ] Add directional audio
 - [ ] Find a way to deal with noise
-- [ ] Fix some unexpected crashes (still unidentified)

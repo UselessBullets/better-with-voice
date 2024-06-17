@@ -46,9 +46,7 @@ public class BetterWithVoice implements ModInitializer, GameStartEntrypoint, Cli
 
 	@Override
 	public void afterGameStart() {
-		OptionsCategory category = new OptionsCategory("gui.options.page.controls.category.betterwithvoice");
-		category.withComponent(new KeyBindingComponent(((IGameSettingsMixin) Minecraft.getMinecraft(Minecraft.class).gameSettings).betterwithvoice$getActivateVoiceKey()));
-		LOGGER.info("After client start");
+
 	}
 
 	@Override
@@ -61,6 +59,5 @@ public class BetterWithVoice implements ModInitializer, GameStartEntrypoint, Cli
 		OptionsCategory category = new OptionsCategory("gui.options.page.controls.category.betterwithvoice");
 		category.withComponent(new KeyBindingComponent(((IGameSettingsMixin) Minecraft.getMinecraft(Minecraft.class).gameSettings).betterwithvoice$getActivateVoiceKey()));
 		OptionsPages.CONTROLS.withComponent(category);
-		LOGGER.info(String.valueOf(I18n.getInstance().getCurrentLanguage().getName()));
 	}
 }

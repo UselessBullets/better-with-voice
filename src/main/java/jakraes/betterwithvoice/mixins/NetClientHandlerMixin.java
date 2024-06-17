@@ -24,7 +24,7 @@ public class NetClientHandlerMixin implements INetHandlerMixin {
 	private SourceDataLine speakers;
 
 	@Inject(method = "<init>", at = @At("TAIL"))
-	public void constructInjection(Minecraft minecraft, String host, int port, CallbackInfo ci) throws LineUnavailableException {
+	public void betterwithvoice$constructInjection(Minecraft minecraft, String host, int port, CallbackInfo ci) throws LineUnavailableException {
 		format = new AudioFormat(44100, 16, 2, true, true);
 		info = new DataLine.Info(SourceDataLine.class, format);
 		speakers = (SourceDataLine) AudioSystem.getLine(info);
@@ -32,7 +32,7 @@ public class NetClientHandlerMixin implements INetHandlerMixin {
 		speakers.start();
 	}
 
-	public void handleVoice(PacketVoice packetVoice) {
+	public void betterwithvoice$handleVoice(PacketVoice packetVoice) {
 		if (packetVoice.bytesInBuffer == -1) {
 			return;
 		}

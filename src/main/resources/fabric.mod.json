@@ -26,6 +26,12 @@
 		],
 		"afterGameStart": [
 			"jakraes.betterwithvoice.BetterWithVoice"
+		],
+		"beforeClientStart": [
+			"jakraes.betterwithvoice.BetterWithVoice"
+		],
+		"afterClientStart": [
+			"jakraes.betterwithvoice.BetterWithVoice"
 		]
 	},
   "mixins": [

@@ -37,7 +37,7 @@ public class PacketVoice extends Packet {
 
 	@Override
 	public void processPacket(NetHandler netHandler) {
-		((INetHandlerMixin) netHandler).handleVoice(this);
+		((INetHandlerMixin) netHandler).betterwithvoice$handleVoice(this);
 	}
 
 	@Override

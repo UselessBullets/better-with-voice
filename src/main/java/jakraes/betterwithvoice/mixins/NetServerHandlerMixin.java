@@ -18,7 +18,7 @@ public class NetServerHandlerMixin implements INetHandlerMixin {
 	@Shadow
 	private EntityPlayerMP playerEntity;
 
-	public void handleVoice(PacketVoice packetVoice) {
+	public void betterwithvoice$handleVoice(PacketVoice packetVoice) {
 		for (EntityPlayerMP player : mcServer.playerList.playerEntities) {
 			if (player.id == playerEntity.id) {
 				continue;

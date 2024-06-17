@@ -1,6 +1,7 @@
 package jakraes.betterwithvoice.mixins;
 
 import jakraes.betterwithvoice.BetterWithVoice;
+import jakraes.betterwithvoice.interfaces.IGameSettingsMixin;
 import jakraes.betterwithvoice.misc.SenderThread;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.PlayerInput;
@@ -20,13 +21,13 @@ public class PlayerInputMixin {
 	private SenderThread senderThread;
 
 	@Inject(method = "<init>", at = @At("TAIL"))
-	public void constructorInject(Minecraft minecraft, CallbackInfo ci) {
+	public void betterwithvoice$constructorInject(Minecraft minecraft, CallbackInfo ci) {
 		senderThread = new SenderThread(minecraft.getSendQueue());
 	}
 
 	@Inject(method = "keyEvent", at = @At("HEAD"))
-	public void keyEventInject(int keyCode, boolean pressed, CallbackInfo ci) {
-		if (keyCode == V_KEY) {
+	public void betterwithvoice$keyEventInject(int keyCode, boolean pressed, CallbackInfo ci) {
+		if (((IGameSettingsMixin) mc.gameSettings).betterwithvoice$getActivateVoiceKey().isKeyboardKey(keyCode)) {
 			if (pressed && !senderThread.isAlive()) {
 				BetterWithVoice.LOGGER.info("Sending");
 				senderThread.start();

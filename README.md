@@ -1,6 +1,6 @@
 # Better With Voice!
 
-Better With Voice! is a mod for BTA that adds a simple voice chat to the game.
+Better With Voice! is a mod for [Better Than Adventure!](https://www.betterthanadventure.net) that adds a simple voice chat to the game.
 
 ### TODO
 - [ ] Add a way to change the keybind

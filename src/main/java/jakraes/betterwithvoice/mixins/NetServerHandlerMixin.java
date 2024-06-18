@@ -25,6 +25,8 @@ public class NetServerHandlerMixin implements INetHandlerMixin {
 			}
 
 			packetVoice.distance = playerEntity.distanceTo(player);
+			packetVoice.posX = playerEntity.x;
+			packetVoice.posZ = playerEntity.z;
 
 			player.playerNetServerHandler.sendPacket(packetVoice);
 		}

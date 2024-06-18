@@ -22,7 +22,7 @@ public class PlayerInputMixin {
 
 	@Inject(method = "<init>", at = @At("TAIL"))
 	public void betterwithvoice$constructorInject(Minecraft minecraft, CallbackInfo ci) {
-		senderThread = new SenderThread(minecraft.getSendQueue());
+		senderThread = new SenderThread(minecraft, minecraft.getSendQueue());
 	}
 
 	@Inject(method = "keyEvent", at = @At("HEAD"))
@@ -34,7 +34,7 @@ public class PlayerInputMixin {
 			} else if (!pressed) {
 				BetterWithVoice.LOGGER.info("Stopping");
 				senderThread.end();
-				senderThread = new SenderThread(mc.getSendQueue());
+				senderThread = new SenderThread(mc, mc.getSendQueue());
 			}
 		}
 	}

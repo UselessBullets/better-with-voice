@@ -14,11 +14,15 @@ public class PacketVoice extends Packet {
 	public byte[] buffer;
 	public int bytesInBuffer;
 	public double distance;
+	public double posX;
+	public double posZ;
 
 	public PacketVoice() {
 		buffer = new byte[BUFFER_SIZE];
 		bytesInBuffer = 0;
 		distance = -1;
+		posX = -1;
+		posZ = -1;
 	}
 
 	@Override
@@ -26,6 +30,8 @@ public class PacketVoice extends Packet {
 		dataInputStream.read(buffer, 0, BUFFER_SIZE);
 		bytesInBuffer = dataInputStream.readInt();
 		distance = dataInputStream.readDouble();
+		posX = dataInputStream.readDouble();
+		posZ = dataInputStream.readDouble();
 	}
 
 	@Override
@@ -33,6 +39,8 @@ public class PacketVoice extends Packet {
 		dataOutputStream.write(buffer, 0, BUFFER_SIZE);
 		dataOutputStream.writeInt(bytesInBuffer);
 		dataOutputStream.writeDouble(distance);
+		dataOutputStream.writeDouble(posX);
+		dataOutputStream.writeDouble(posZ);
 	}
 
 	@Override
@@ -42,7 +50,7 @@ public class PacketVoice extends Packet {
 
 	@Override
 	public int getPacketSize() {
-		return BUFFER_SIZE + 4 + 8;
+		return BUFFER_SIZE + 4 + 8 + 8 + 8;
 	}
 
 }

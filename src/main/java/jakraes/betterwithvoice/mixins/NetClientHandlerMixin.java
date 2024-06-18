@@ -1,5 +1,6 @@
 package jakraes.betterwithvoice.mixins;
 
+import jakraes.betterwithvoice.BetterWithVoice;
 import jakraes.betterwithvoice.interfaces.INetHandlerMixin;
 import jakraes.betterwithvoice.misc.PacketVoice;
 import net.minecraft.client.Minecraft;
@@ -18,6 +19,9 @@ import javax.sound.sampled.*;
 public class NetClientHandlerMixin implements INetHandlerMixin {
 	@Final
 	@Shadow
+	private Minecraft mc;
+	@Final
+	@Shadow
 	private NetworkManager netManager;
 	private AudioFormat format;
 	private DataLine.Info info;
@@ -32,13 +36,56 @@ public class NetClientHandlerMixin implements INetHandlerMixin {
 		speakers.start();
 	}
 
+	// This whole function is magic to me, about 99% of this is code I didn't write, very cool :D
 	public void betterwithvoice$handleVoice(PacketVoice packetVoice) {
 		if (packetVoice.bytesInBuffer == -1) {
 			return;
 		}
 
-		FloatControl control = (FloatControl) speakers.getControl(FloatControl.Type.MASTER_GAIN);
-		control.setValue((float) (-4.0f * packetVoice.distance));
+		double playerX = mc.thePlayer.x;
+		double playerZ = mc.thePlayer.z;
+		float playerYaw = mc.thePlayer.yRot;
+		float playerPitch = mc.thePlayer.xRot;
+
+		double playerYawRad = Math.toRadians(playerYaw);
+		double playerPitchRad = Math.toRadians(playerPitch);
+
+		double lookX = -Math.sin(playerYawRad) * Math.cos(playerPitchRad);
+		double lookZ = Math.cos(playerYawRad) * Math.cos(playerPitchRad);
+		double lookY = -Math.sin(playerPitchRad);
+
+		double soundX = packetVoice.posX - playerX;
+		double soundZ = packetVoice.posZ - playerZ;
+		double soundY = 0;
+
+		double dotProduct = soundX * lookX + soundZ * lookZ + soundY * lookY;
+		double soundDistance = packetVoice.distance;
+		double lookDistance = Math.sqrt(lookX * lookX + lookZ * lookZ + lookY * lookY);
+
+		double cosAngle = dotProduct / (soundDistance * lookDistance);
+		double angleDifference = Math.acos(cosAngle);
+
+		double crossProduct = soundX * lookZ - soundZ * lookX;
+		float pan = (float) (Math.signum(crossProduct) * angleDifference / Math.PI);
+
+		float leftGain = (1 - pan) / 2;
+		float rightGain = (1 + pan) / 2;
+
+		leftGain = Math.max(0, Math.min(leftGain, 1));
+		rightGain = Math.max(0, Math.min(rightGain, 1));
+
+		for (int i = 0; i < packetVoice.bytesInBuffer; i += 4) {
+			short leftSample = (short) (((packetVoice.buffer[i] & 0xFF) << 8) | (packetVoice.buffer[i + 1] & 0xFF));
+			leftSample = (short) (leftSample * leftGain);
+			packetVoice.buffer[i] = (byte) ((leftSample >> 8) & 0xFF);
+			packetVoice.buffer[i + 1] = (byte) (leftSample & 0xFF);
+
+			short rightSample = (short) (((packetVoice.buffer[i + 2] & 0xFF) << 8) | (packetVoice.buffer[i + 3] & 0xFF));
+			rightSample = (short) (rightSample * rightGain);
+			packetVoice.buffer[i + 2] = (byte) ((rightSample >> 8) & 0xFF);
+			packetVoice.buffer[i + 3] = (byte) (rightSample & 0xFF);
+		}
+
 		speakers.write(packetVoice.buffer, 0, packetVoice.bytesInBuffer);
 	}
 }

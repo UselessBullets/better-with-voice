@@ -26,6 +26,11 @@ public class BetterWithVoice implements ModInitializer, GameStartEntrypoint, Cli
 
 	@Override
 	public void beforeGameStart() {
+
+	}
+
+	@Override
+	public void afterGameStart() {
 		boolean found = false;
 
 		// Searches for a free packet id so PacketVoice can be assigned an id
@@ -42,11 +47,6 @@ public class BetterWithVoice implements ModInitializer, GameStartEntrypoint, Cli
 			LOGGER.error("Failed to find free id for voice packet!");
 			throw new RuntimeException();
 		}
-	}
-
-	@Override
-	public void afterGameStart() {
-
 	}
 
 	@Override

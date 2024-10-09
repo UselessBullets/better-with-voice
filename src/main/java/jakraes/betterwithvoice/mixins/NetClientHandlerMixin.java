@@ -38,7 +38,7 @@ public class NetClientHandlerMixin implements INetHandlerMixin {
 
 	// This whole function is magic to me, about 99% of this is code I didn't write, very cool :D
 	public void betterwithvoice$handleVoice(PacketVoice packetVoice) {
-		if (packetVoice.bytesInBuffer == -1) {
+		if (packetVoice.bytesInBuffer <= -1) {
 			return;
 		}
 
@@ -74,16 +74,17 @@ public class NetClientHandlerMixin implements INetHandlerMixin {
 		leftGain = Math.max(0, Math.min(leftGain, 1));
 		rightGain = Math.max(0, Math.min(rightGain, 1));
 
-		for (int i = 0; i < packetVoice.bytesInBuffer; i += 4) {
-			short leftSample = (short) (((packetVoice.buffer[i] & 0xFF) << 8) | (packetVoice.buffer[i + 1] & 0xFF));
+		for (int i = 0; i < packetVoice.bytesInBuffer/4; i += 4) {
+			int j = i * 4;
+			short leftSample = (short) (((packetVoice.buffer[j] & 0xFF) << 8) | (packetVoice.buffer[j + 1] & 0xFF));
 			leftSample = (short) (leftSample * leftGain);
-			packetVoice.buffer[i] = (byte) ((leftSample >> 8) & 0xFF);
-			packetVoice.buffer[i + 1] = (byte) (leftSample & 0xFF);
+			packetVoice.buffer[j] = (byte) ((leftSample >> 8) & 0xFF);
+			packetVoice.buffer[j + 1] = (byte) (leftSample & 0xFF);
 
-			short rightSample = (short) (((packetVoice.buffer[i + 2] & 0xFF) << 8) | (packetVoice.buffer[i + 3] & 0xFF));
+			short rightSample = (short) (((packetVoice.buffer[j + 2] & 0xFF) << 8) | (packetVoice.buffer[j + 3] & 0xFF));
 			rightSample = (short) (rightSample * rightGain);
-			packetVoice.buffer[i + 2] = (byte) ((rightSample >> 8) & 0xFF);
-			packetVoice.buffer[i + 3] = (byte) (rightSample & 0xFF);
+			packetVoice.buffer[j + 2] = (byte) ((rightSample >> 8) & 0xFF);
+			packetVoice.buffer[j + 3] = (byte) (rightSample & 0xFF);
 		}
 
 		speakers.write(packetVoice.buffer, 0, packetVoice.bytesInBuffer);
